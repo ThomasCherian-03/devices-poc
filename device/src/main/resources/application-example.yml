@@ -31,6 +31,15 @@ spring:
     jwtSecret: "YOUR_JWT_SECRET"
     jwtExpirationMs: "YOUR_JWT_EXPIRATION_IN_MS"
 
+#For Spring Kafka
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+#
+
+# for spring cloud binder kafka
   cloud:
     function:
       definition: deviceUpdateEventSupplier;deviceCreateEventSupplier
@@ -45,7 +54,7 @@ spring:
       kafka:
         binder:
           brokers: localhost:9092
-
+#
 management:
   endpoints:
     web:

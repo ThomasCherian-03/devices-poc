@@ -49,7 +49,8 @@ public class DeviceServiceImpl implements IDeviceService {
         deviceRepository.save(device);
 
         String loggedInUser = getLoggedInUser();
-        deviceEventProducer.triggerCreate(deviceDto.getEmpId(),loggedInUser);
+//        deviceEventProducer.triggerCreate(deviceDto.getEmpId(),loggedInUser);
+        deviceEventProducer.sendCreateEvent(deviceDto.getEmpId(),loggedInUser);
     }
 
     @Override
@@ -78,7 +79,8 @@ public class DeviceServiceImpl implements IDeviceService {
 
         String loggedInUser = getLoggedInUser();
 
-        deviceEventProducer.triggerUpdate(deviceDto.getEmpId(),loggedInUser);
+//        deviceEventProducer.triggerUpdate(deviceDto.getEmpId(),loggedInUser);
+        deviceEventProducer.sendUpdateEvent(deviceDto.getEmpId(),loggedInUser);
         return isUpdated;
     }
 

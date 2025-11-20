@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 
-public class DeviceEvent {
+public class DeviceEventDto {
     private String empId;
     private String event;
     private String updatedBy;
