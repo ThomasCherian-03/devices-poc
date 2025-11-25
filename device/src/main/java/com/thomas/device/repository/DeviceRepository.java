@@ -9,7 +9,6 @@ import java.util.Optional;
 
 public interface DeviceRepository extends JpaRepository<Device, Long> {
 
-    Optional<Device> findBySerialNo(String serialNo);
     Optional<Device> findByEmpId(String empId);
 
     @Transactional

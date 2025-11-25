@@ -1,5 +1,7 @@
 package com.thomas.device.audit;
 
+import com.thomas.device.service.impl.AuditService;
+import lombok.AllArgsConstructor;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -7,16 +9,13 @@ import org.springframework.stereotype.Component;
 import java.util.Optional;
 
 @Component("auditAwareImpl")
+@AllArgsConstructor
 public class AuditAwareImpl implements AuditorAware<String> {
+
+    private final AuditService auditService;
 
     @Override
     public Optional<String> getCurrentAuditor() {
-        var authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        if (authentication == null || !authentication.isAuthenticated()) {
-            return Optional.of("System");
-        }
-
-        return Optional.ofNullable(authentication.getName());
+        return Optional.ofNullable(auditService.getLoggedInUser());
     }
 }
