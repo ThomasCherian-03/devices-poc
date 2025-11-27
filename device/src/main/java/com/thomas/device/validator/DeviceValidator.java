@@ -12,7 +12,7 @@ import java.util.Optional;
 
 @Component
 @AllArgsConstructor
-public class DeviceValidator {
+public class DeviceValidator implements IDeviceValidator {
 
     private DeviceRepository deviceRepository;
 

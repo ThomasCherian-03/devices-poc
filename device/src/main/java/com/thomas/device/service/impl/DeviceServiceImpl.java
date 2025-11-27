@@ -1,15 +1,19 @@
 package com.thomas.device.service.impl;
 
 
+import com.thomas.device.Kafka.IKafkaDeviceEventPublisher;
 import com.thomas.device.dto.DeviceDto;
 import com.thomas.device.entity.Device;
 import com.thomas.device.factory.DeviceFactory;
+import com.thomas.device.factory.IDeviceFactory;
 import com.thomas.device.mapper.DeviceMapper;
 import com.thomas.device.repository.DeviceRepository;
+import com.thomas.device.service.IAuditService;
 import com.thomas.device.service.IDeviceService;
 import com.thomas.device.service.audit.AuditService;
 import com.thomas.device.Kafka.event.KafkaDeviceEventPublisher;
 import com.thomas.device.validator.DeviceValidator;
+import com.thomas.device.validator.IDeviceValidator;
 import lombok.AllArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -21,10 +25,10 @@ public class DeviceServiceImpl implements IDeviceService {
 
 
     private final DeviceRepository deviceRepository;
-    private final AuditService auditService;
-    private final DeviceFactory deviceFactory;
-    private final DeviceValidator deviceValidator;
-    private final KafkaDeviceEventPublisher eventPublisher;
+    private final IAuditService auditService;
+    private final IDeviceFactory deviceFactory;
+    private final IDeviceValidator deviceValidator;
+    private final IKafkaDeviceEventPublisher eventPublisher;
 
 
     /**
@@ -56,14 +60,13 @@ public class DeviceServiceImpl implements IDeviceService {
     @CacheEvict(value = "devices", key = "#deviceDto.empId")
     public boolean updateDevice(DeviceDto deviceDto) {
         boolean isUpdated = false;
-        if(deviceDto != null)
-        {
+        if(deviceDto != null) {
             Device device = deviceValidator.validateExistingDevice(deviceDto.getEmpId());
             DeviceMapper.maptoDevice(deviceDto, device);
             deviceRepository.save(device);
             isUpdated = true;
+            eventPublisher.publishDeviceUpdate(deviceDto.getEmpId(), auditService.getLoggedInUser());
         }
-        eventPublisher.publishDeviceUpdate(deviceDto.getEmpId(),auditService.getLoggedInUser());
         return isUpdated;
     }
 
