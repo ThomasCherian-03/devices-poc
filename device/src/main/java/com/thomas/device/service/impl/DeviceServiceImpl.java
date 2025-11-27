@@ -1,13 +1,14 @@
 package com.thomas.device.service.impl;
 
-import com.thomas.device.Kafka.DeviceEventProducer;
+
 import com.thomas.device.dto.DeviceDto;
 import com.thomas.device.entity.Device;
-import com.thomas.device.exception.ResourceNotFoundException;
 import com.thomas.device.factory.DeviceFactory;
 import com.thomas.device.mapper.DeviceMapper;
 import com.thomas.device.repository.DeviceRepository;
 import com.thomas.device.service.IDeviceService;
+import com.thomas.device.service.audit.AuditService;
+import com.thomas.device.service.event.KafkaDeviceEventPublisher;
 import com.thomas.device.service.validator.DeviceValidator;
 import lombok.AllArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
@@ -18,11 +19,13 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 public class DeviceServiceImpl implements IDeviceService {
 
-    private final DeviceEventProducer deviceEventProducer;
-    private DeviceRepository deviceRepository;
-    private  AuditService auditService;
-    private DeviceFactory deviceFactory;
-    private DeviceValidator deviceValidator;
+
+    private final DeviceRepository deviceRepository;
+    private final AuditService auditService;
+    private final DeviceFactory deviceFactory;
+    private final DeviceValidator deviceValidator;
+    private final KafkaDeviceEventPublisher eventPublisher;
+
 
     /**
      *
@@ -37,7 +40,8 @@ public class DeviceServiceImpl implements IDeviceService {
 
         deviceRepository.save(device);
 
-        deviceEventProducer.sendCreateEvent(deviceDto.getEmpId(),auditService.getLoggedInUser());
+        eventPublisher.publishDeviceCreate(deviceDto.getEmpId(),auditService.getLoggedInUser());
+
     }
 
     @Override
@@ -59,7 +63,7 @@ public class DeviceServiceImpl implements IDeviceService {
             deviceRepository.save(device);
             isUpdated = true;
         }
-        deviceEventProducer.sendUpdateEvent(deviceDto.getEmpId(),auditService.getLoggedInUser());
+        eventPublisher.publishDeviceUpdate(deviceDto.getEmpId(),auditService.getLoggedInUser());
         return isUpdated;
     }
 

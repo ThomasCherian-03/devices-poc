@@ -7,7 +7,7 @@ import com.thomas.device.util.DeviceUtils;
 import org.springframework.stereotype.Component;
 
 @Component
-public class DeviceFactory {
+public class DeviceFactory implements IDeviceFactory {
 
     public Device create(DeviceDto deviceDto)
     {

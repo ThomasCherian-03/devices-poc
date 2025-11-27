@@ -1,9 +1,8 @@
 package com.thomas.device.audit;
 
-import com.thomas.device.service.impl.AuditService;
+import com.thomas.device.service.audit.AuditService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.AuditorAware;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
