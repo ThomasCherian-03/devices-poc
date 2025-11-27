@@ -1,4 +1,4 @@
-package com.thomas.device.security;
+package com.thomas.device.config;
 
 import com.thomas.device.security.jwt.AuthEntryPointJwt;
 import com.thomas.device.security.jwt.AuthTokenFilter;

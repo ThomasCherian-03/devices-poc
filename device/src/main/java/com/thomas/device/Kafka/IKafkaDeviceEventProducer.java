@@ -1,4 +1,4 @@
-package com.thomas.device.service;
+package com.thomas.device.Kafka;
 
 public interface IKafkaDeviceEventProducer {
 

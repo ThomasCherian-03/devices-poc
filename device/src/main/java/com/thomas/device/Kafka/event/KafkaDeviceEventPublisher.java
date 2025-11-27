@@ -1,7 +1,7 @@
-package com.thomas.device.service.event;
+package com.thomas.device.Kafka.event;
 
 import com.thomas.device.Kafka.DeviceEventProducer;
-import com.thomas.device.service.IKafkaDeviceEventProducer;
+import com.thomas.device.Kafka.IKafkaDeviceEventProducer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
